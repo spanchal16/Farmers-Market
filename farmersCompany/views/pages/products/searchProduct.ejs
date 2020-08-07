@@ -1,0 +1,54 @@
+<!-- Searching a part -->
+<div class="m-3" style="overflow: auto; padding: 16vh 0"">
+    <div class="col-sm-6 col-md-6 col-lg-8 mx-auto">
+      <center><h3>Search a Product</h1></center>
+  
+      <div class="card border-dark">
+        <div class="card-body">
+          <form class="needs-validation" method="POST" action="/searchProduct">
+            <label>Product ID</label>
+            <input
+              type="number"
+              class="form-control"
+              name="productID"
+              placeholder="Enter Part ID"
+              min="0"
+              step="1"
+              required
+            />
+  
+            <br />
+  
+            <button class="btn btn-primary" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+  
+      <br />
+  
+      <% if (typeof product != 'undefined'){ if (product == null) { %>
+  
+      <div class="card border-danger bg-danger">
+        <div class="card-body mx-auto">
+          <p class="card-text text-white">
+            No such data is available in database.
+          </p>
+        </div>
+      </div>
+  
+      <% } else { %>
+  
+      <div class="card border-success bg-success">
+        <div class="card-body mx-auto">
+          <p class="card-text text-white">
+              <strong>Product ID = </strong><%= product.productID %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <strong>Product Name = </strong><%= product.product %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <strong>Stock = </strong><%= product.stock %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <strong>Price = </strong><%= product.price %>
+          </p>
+        </div>
+      </div>
+      <% } }%>
+    </div>
+  </div>
+  
