@@ -1,39 +1,31 @@
 <div class="mb-3" style="margin-top: 27vh; overflow: auto;">
   <div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center;margin-left: 30%;" >
-    <h2>Login</h2>
+    <h2>2-Factor Question</h2>
     <div class="card-body" >
-      <form class="needs-validation" method="POST" action="/twoFactor">
-        <label for="lblpartid">Email ID </label>
-        <input
-          class="form-control"
-          name="txtemailid"
-          type="email"
-          placeholder="Enter your email id"
-          required
-        />
+      <form class="needs-validation" method="POST" action="/profile">
+        <label for="lblpartid"> <%= question %> </label>
         <br />
-        <label for="lblpartid">Password </label>
+        <label for="lblpartid">Answer </label>
         <input
           class="form-control"
-          name="txtpassword"
-          type = "password"
+          name="txtanswer"
+          type = "text"
           placeholder="Enter your pasword"
           maxlength="64"
           required
         />
         <br />
 
-        <button class="btn btn-primary" type="submit">Login</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
       </form>
       <br />
-      <a href="/registerUser">New user? Register Here</a>
     </div>
   </div>
 
 
   <% if (typeof error != 'undefined'){ if (error != null || error != "") { %>
   
-    <div class="card border-danger bg-danger" style="width: 30%; margin-left: 40%;">
+    <div class="card border-danger bg-danger" style="width: 30%;">
       <div class="card-body mx-auto">
         <p class="card-text text-white">
           Pleasae login first.
