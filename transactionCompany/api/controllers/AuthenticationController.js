@@ -17,6 +17,7 @@ module.exports = {
 
     backHome: async function (req, res) {
         let error = req.query.error;
+        req.session.destroy();
         return res.view("pages/homepage", { error });
     },
 
@@ -58,9 +59,9 @@ module.exports = {
                             question = results["rows"][0]["question2"];
                             answer = results["rows"][0]["answer2"];
                         }
-
+                        name = results["rows"][0]["first_name"];
                         
-                        res.view('pages/twoFactorQuestions', { email, question, answer });
+                        res.view('pages/twoFactorQuestions', { email, question, answer, name });
                     }
                 }
             });
@@ -78,6 +79,11 @@ module.exports = {
             let correctAnswer = req.body.correctanswer;
             if(userAnswer.toLowerCase() === correctAnswer.toLowerCase()){
                 console.log("Authenticated!!!!!!!!!!!!");
+                req.session.authenticated = true;
+                req.session.emailId =  req.body.email;
+                req.session.name = req.body.name;
+                console.log(req.session);
+                res.redirect('/userHome');
             }
             else{
                 res.redirect('/?error=Wrong Answer! Start Again!');
@@ -86,4 +92,32 @@ module.exports = {
         }
 
     },
+
+    goHome: async function (req, res) {
+        if(req.session.authenticated != true ){
+            res.redirect('/?error=You need to login first!');
+        }
+        else{
+            let name = req.session.name;
+            await axios({
+                method: 'get',
+                //URL TO BE CHANGEDDDDDDDDDDDD
+                url: "https://4ra1a2g84e.execute-api.us-east-1.amazonaws.com/production/getallproducts",
+                headers: {},
+                data: {}
+            })
+                .then(function (response) {
+                   // console.log(response);
+                    allData = response;
+                })
+                .catch(function (error) {
+                    return res.json({ status: 'unsuccessful' });
+            });
+            console.log(allData)
+            res.view('pages/userHome', { name, allData });
+        }
+
+    },
+
+
 };
