@@ -30,11 +30,14 @@ module.exports = {
             }
         }
         console.log(products);
+        if(products.length < 1){
+            products = null;
+        }
         res.view('pages/searchProduct', { products })
         }
         
       },
-      
+
       goSearch: async function (req, res) {
         if(req.session.authenticated != true ){
             res.redirect('/?error=You need to login first!');
