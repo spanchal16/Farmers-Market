@@ -10,51 +10,33 @@ function showError(code, message, res) {
 
 module.exports = {
     // GET ALL
-    viewData: function (req, res) {
-        const sqlSelectAll = `SELECT product, price, productID FROM products`;
+    viewData: async function (req, res) {
         try {
-            sails.sendNativeQuery(sqlSelectAll, function (err, rawResult) {
-                if (!rawResult.rows) {
-                    let code = "400";
-                    let message = "No data in database";
-                    showError(code, message, res);
-                }
-                if (rawResult.rows) {
-                    return res.view("pages/homepage", { products: rawResult.rows })
-                }
-            })
+            var products = await axios.get("https://kei3ipx56h.execute-api.us-east-1.amazonaws.com/test/getallproducts");
+            if (!products.data) {
+                showError(code, message, res);
+            }
+            if (products.data) {
+                return res.view("pages/homepage", { products: products.data })
+            }
         } catch (err) {
             return res.view("error", { err: err });
         }
     },
     // Search product by ID
     searchProduct: async function (req, res) {
-        const productID = parseInt(req.body.productID);
+        const productID = req.body.productID;
 
         try {
-            const sqlSelectOne = `SELECT * FROM products WHERE productID = $1`;
-            await sails.sendNativeQuery(sqlSelectOne, [productID], function (err, rawResult) {
-                var length = rawResult.rows.length;
-                if (length == 0) {
-                    // let code = "400";
-                    // let message = "Product ID: " + productID + partId + " do not exist, can't retrieve data.";
-                    // showError(code, message, res);
-                    res.view("pages/products/searchProduct", { product: null });
-                } else {
-                    var product = {};
-                    for (let [key, value] of Object.entries(rawResult.rows)) {
-                        for (let [k, v] of Object.entries(value)) {
-                            product[k] = v;
-                        }
-                    }
-                    res.view("pages/products/searchProduct", { product: product });
-                }
-            })
+            var result = await axios.get("https://kei3ipx56h.execute-api.us-east-1.amazonaws.com/test/getoneproduct?productID=" + productID);
+            if (result.data) {
+                res.view("pages/products/searchProduct", { product: result.data });
+            } else if (!result.data) {
+                res.view("pages/products/searchProduct", { product: null });
+            }
         } catch (err) {
             return res.view("error", { err: err });
         }
-
-
     },
     // Add a product
     addProduct: async function (req, res) {
@@ -84,54 +66,38 @@ module.exports = {
     // Fetch existing product
     editProduct: async function (req, res) {
         const productID = req.params.productID;
-        const sqlSelectOne = `SELECT * FROM products WHERE productID = $1`;
 
         try {
-            await sails.sendNativeQuery(sqlSelectOne, [productID], function (err, rawResult) {
-                console.log(rawResult.rows);
-                var length = rawResult.rows.length;
-                if (length == 0) {
-                    let code = "400";
-                    let message = "Product ID: " + productID + " do not exist, can't retrieve data.";
-                    showError(code, message, res);
-                } else {
-                    var product = {};
-                    for (let [key, value] of Object.entries(rawResult.rows)) {
-                        for (let [k, v] of Object.entries(value)) {
-                            product[k] = v;
-                        }
-                    }
-                    return res.view("pages/products/updateProduct", { product: product });
-                }
-            })
+            var result = await axios.get("https://kei3ipx56h.execute-api.us-east-1.amazonaws.com/test/getoneproduct?productID=" + productID);
+            if (result.data) {
+                return res.view("pages/products/updateProduct", { product: result.data });
+            } else if (!result.data) {
+                showError(code, message, res);
+            }
         } catch (err) {
             return res.view("error", { err: err });
         }
     },
 
     // Update product
-    updateProduct: function (req, res) {
+    updateProduct: async function (req, res) {
         const productID = parseInt(req.body.productID);
         const productName = req.body.productName;
         const stock = parseInt(req.body.stock);
         const price = parseFloat(req.body.price);
 
-        const sqlSelectOne = `SELECT * FROM products WHERE productID = $1`;
+        const data = { "productID": productID, "productName": productName, "stock": stock, "price": price };
 
         try {
-            sails.sendNativeQuery(sqlSelectOne, [productID], async function (err, rawResult) {
-                var length = rawResult.rows.length;
-                if (length != 0) {
-                    const sqlUpdate = `UPDATE products SET product = $1, stock = $2, price = $3 WHERE productID = $4`;
-                    await sails.sendNativeQuery(sqlUpdate, [productName, stock, price, productID]);
-                    return res.redirect("/");
-
-                } else {
-                    let code = "400";
-                    let message = "Product ID: " + productID + " do not exist, can't update data";
-                    showError(code, message, res);
-                }
-            })
+            var result = await axios.post("https://kei3ipx56h.execute-api.us-east-1.amazonaws.com/test/updateproduct", data)
+                .then(async function (res) {
+                    return res;
+                });
+            if (result.data.status == "success") {
+                res.redirect("/");
+            } else if (result.data.status == "unsuccess") {
+                showError(result.data.code, result.data.message, res);
+            }
         } catch (err) {
             return res.view("error", { err: err });
         }

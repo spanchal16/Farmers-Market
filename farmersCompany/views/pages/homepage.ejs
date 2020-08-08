@@ -5,7 +5,9 @@
       <table class="table table-bordered">
         <thead class="table-dark">
           <tr>
+            <th scope="col">Product ID</th>
             <th scope="col">Product Name</th>
+            <th scope="col">Stock</th>
             <th scope="col">Price ($/lb)</th>
             <th scope="col">Update</th>
           </tr>
@@ -13,7 +15,9 @@
         <tbody>
           <% products.forEach(function(product){ %>
           <tr>
+            <td><%= product.productID %></td>
             <td><%= product.product %></td>
+            <td><%= product.stock %></td>
             <td><%= product.price %></td>
             <td>
               <a href="/updateProduct/<%= product.productID %>" class="btn btn-primary">Update</a>
@@ -27,7 +31,6 @@
   <div class="text-center mx-auto">
     <h2>Location</h2>
     <p>Come and visit us at 1209 Marginal Rd, Halifax, NS B3H 4P8</p>
-    <p>Or through <a href="https://git.cs.dal.ca/hshah/cloudproject">online store</a></p> 
     <h2>Hours</h2>
     <p>Saturday & Sunday 7.00 to 14.00 </p>
   </div>
