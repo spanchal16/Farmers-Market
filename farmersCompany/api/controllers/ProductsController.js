@@ -178,6 +178,29 @@ module.exports = {
         });
     },
 
+    getPrice: async function (req, res) {
+        console.log(req.params);
+        const productID = parseInt(req.params.productID);
+        const product = req.params.product;
+
+        await axios({
+            method: 'post',
+            url: "https://4ra1a2g84e.execute-api.us-east-1.amazonaws.com/production/getprice",
+            headers: {},
+            data: {               
+                productID: productID,
+                product: product
+            }
+        })
+            .then(function (response) {
+                //console.log(response);
+                return res.json(response["data"]);
+            })
+            .catch(function (error) {
+                return res.json({ status: 'unsuccessful' });
+        });
+    },
+
     enoughStock: async function (req, res) {
         console.log(req.params);
         const productID = parseInt(req.params.productID);
