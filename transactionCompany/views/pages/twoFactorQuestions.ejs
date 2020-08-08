@@ -1,9 +1,9 @@
 <div class="mb-3" style="margin-top: 27vh; overflow: auto;">
   <div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center;margin-left: 30%;" >
-    <h2>2-Factor Question</h2>
+    <h2>2-Factor Question Authentication</h2>
     <div class="card-body" >
-      <form class="needs-validation" method="POST" action="/profile">
-        <label for="lblpartid"> <%= question %> </label>
+      <form class="needs-validation" method="POST" action="/authenticateAnswer">
+       <h3> <label for="lblpartid"> <%= question %> </label> </h3>
         <br />
         <label for="lblpartid">Answer </label>
         <input
@@ -15,7 +15,7 @@
           required
         />
         <br />
-
+        <input name="correctanswer" type = "hidden" value= <%= answer %> >
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
       <br />

@@ -11,4 +11,5 @@ module.exports.routes = {
 
   "POST /twofactor": "AuthenticationController.twofactorQuestion",
   "GET /twofactor": "AuthenticationController.twofactorQuestion",
+  "POST /authenticateAnswer": "AuthenticationController.authenticateAnswer",
 };

@@ -1,4 +1,6 @@
 <div class="mb-3" style="margin-top: 27vh; overflow: auto;">
+
+
   <div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center;margin-left: 30%;" >
     <h2>Login</h2>
     <div class="card-body" >
@@ -29,14 +31,13 @@
       <a href="/registerUser">New user? Register Here</a>
     </div>
   </div>
-
-
+  
   <% if (typeof error != 'undefined'){ if (error != null || error != "") { %>
   
-    <div class="card border-danger bg-danger" style="width: 30%; margin-left: 40%;">
+    <div class="card border-danger bg-danger" style="width: 35%; margin-left: 30%; margin-top: 1%; height: 1%;">
       <div class="card-body mx-auto">
         <p class="card-text text-white">
-          Pleasae login first.
+          <%= error %>
         </p>
       </div>
     </div>
@@ -44,6 +45,5 @@
     <% } %>
 
     <%  }%>  
-
 
 </div>
