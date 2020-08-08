@@ -5,12 +5,20 @@ const orderDetails = sequelize.define(
   "orderDetails",
   {
     O_ID: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,
     },
-    User_ID: {
-      type: DataTypes.INTEGER,
+    Username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    Email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    Address: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     C_ID: {

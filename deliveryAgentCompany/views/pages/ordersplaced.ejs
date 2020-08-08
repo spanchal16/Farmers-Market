@@ -6,7 +6,9 @@
       <thead class="table-dark">
         <tr>
           <th scope="col">Order ID</th>
-          <th scope="col">User ID</th>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Address</th>
           <th scope="col">Company ID</th>
           <th scope="col">Type</th>
         </tr>
@@ -15,7 +17,9 @@
         <% orders.forEach(function(order){ %>
         <tr>
           <td><%= order.O_ID %></td>
-          <td><%= order.User_ID %></td>
+          <td><%= order.Username %></td>
+          <td><%= order.Email %></td>
+          <td><%= order.Address %></td>
           <td><%= order.C_ID %></td>
           <td><%= order.Type %></td>
         </tr>

@@ -135,7 +135,9 @@ app.post("/addorder", async (req, res) => {
     });
   } else if (
     search_param.has("oid") === false ||
-    search_param.has("userid") === false ||
+    search_param.has("username") === false ||
+    search_param.has("email") === false ||
+    search_param.has("address") === false ||
     search_param.has("cid") === false ||
     search_param.has("type") === false
   ) {
@@ -144,7 +146,9 @@ app.post("/addorder", async (req, res) => {
     });
   } else if (
     req.query.oid === "" ||
-    req.query.userid === "" ||
+    req.query.username === "" ||
+    req.query.email === "" ||
+    req.query.address === "" ||
     req.query.cid === "" ||
     req.query.type === ""
   ) {
@@ -155,7 +159,9 @@ app.post("/addorder", async (req, res) => {
     await orderDetails
       .create({
         O_ID: req.query.oid,
-        User_ID: req.query.userid,
+        Username: req.query.username,
+        Email: req.query.email,
+        Address: req.query.address,
         C_ID: req.query.cid,
         Type: req.query.type,
       })
