@@ -163,56 +163,70 @@ module.exports = {
     // API
     getallProducts: async function (req, res) {
 
-        const sql = `SELECT productID, product FROM products`;
-        try {
-            var data = await sails.sendNativeQuery(sql);
-        } catch (err) {
-            switch (err.name) {
-                case 'UsageError': return res.json({ status: 'unsuccess' });
-            }
-        }
-
-        sails.log(data.rows);
-        return res.json(data.rows);
+        await axios({
+            method: 'get',
+            url: "https://4ra1a2g84e.execute-api.us-east-1.amazonaws.com/production/getallproducts",
+            headers: {},
+            data: {}
+        })
+            .then(function (response) {
+                //console.log(response);
+                return res.json(response["data"]);
+            })
+            .catch(function (error) {
+                return res.json({ status: 'unsuccessful' });
+        });
     },
 
+    enoughStock: async function (req, res) {
+        console.log(req.params);
+        const productID = parseInt(req.params.productID);
+        const product = req.params.product;
+        const amount = parseInt(req.params.amount);
+
+        // 
+        await axios({
+            method: 'post',
+            url: "https://4ra1a2g84e.execute-api.us-east-1.amazonaws.com/production/enoughstock",
+            headers: {},
+            data: {
+                productID: productID,
+                product: product,
+                amount: amount
+            }
+        })
+            .then(function (response) {
+                //console.log(response);
+                return res.json(response["data"]);
+            })
+            .catch(function (error) {
+                return res.json({ status: 'unsuccessful' });
+        });
+    },
+    
     buyProduct: async function (req, res) {
         console.log(req.params);
         const productID = parseInt(req.params.productID);
         const product = req.params.product;
         const amount = parseInt(req.params.amount);
 
-        const sql = `SELECT stock FROM products WHERE productID = $1 AND product = $2`;
-        await sails.sendNativeQuery(sql, [productID, product], async function (err, rawResult) {
-            var length = rawResult.rows.length;
-
-            if (length != 0) {
-                stock = rawResult.rows[0].stock
-                console.log(amount)
-                console.log(stock)
-                if (amount <= stock) {
-                    newStock = stock - amount;
-                    const sqlUpdate = `UPDATE products SET stock= $1 WHERE productID = $2 AND product = $3`;
-                    try {
-                        await sails.sendNativeQuery(sqlUpdate, [newStock, productID, product]);
-                        sails.log("stock updated");
-                        return res.json({ status: 'success' });
-
-                    } catch (err) {
-                        sails.log("not able to add update stock in products");
-                        return res.json({ status: 'unsuccessful' });
-
-                    }
-
-                }
-                else {
-                    return res.json({ status: 'not enough stock' })
-                }
-
-            } else {
-                return res.json({ status: 'unsuccessful' })
-
+        // 
+        await axios({
+            method: 'post',
+            url: "https://4ra1a2g84e.execute-api.us-east-1.amazonaws.com/production/buyproduct",
+            headers: {},
+            data: {
+                productID: productID,
+                product: product,
+                amount: amount
             }
-        });
-    }
+        })
+            .then(function (response) {
+                //console.log(response);
+                return res.json(response["data"]);
+            })
+            .catch(function (error) {
+                return res.json({ status: 'unsuccessful' });
+            });
+    },
 }

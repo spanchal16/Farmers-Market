@@ -25,12 +25,9 @@ module.exports.routes = {
 
   // API routes
   "GET /api/getallProducts": "ProductsController.getallProducts",
-  "GET /api/buyProduct/:productID/:product/:amount": "ProductsController.buyProduct",
+  "GET /api/enoughStock/:productID/:product/:amount": "ProductsController.enoughStock",
+  "POST /api/buyProduct/:productID/:product/:amount": "ProductsController.buyProduct",
 
-/*   "GET /api/getDiffJobs": "JobsController.getDiffJobs",
-  "GET /api/getOneJobp/:jobName": "JobsController.getOneJobp",
-  "POST /api/getOneJob": "JobsController.getOneJob",
-  "POST /api/savePartOrders": "PartOrdersController.savePartOrders", */
 
   "GET /error": { view: "error" },
   "GET /notfound": { view: "notfound" },
