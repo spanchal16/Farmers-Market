@@ -1,39 +1,40 @@
 <!-- Delete a product -->
 
 <div class="m-3" style="overflow: auto; padding: 11vh 0">
-    <div class="col-sm-6 col-md-6 col-lg-8 mx-auto">
-      <center><h3>Delete a Product</h3></center>
-  
-      <div class="card border-dark">
-        <div class="card-body">
-          <form class="needs-validation" method="POST" action="/deleteProduct">
-            <label>Product ID</label>
-            <input
-              type="number"
-              class="form-control"
-              name="productID"
-              placeholder="Enter Product ID"
-              min="0"
-              step="1"
-              required
-            />
-  
-            <br />
-  
-            <label>Product Name</label>
-            <input
-              type="text"
-              class="form-control"
-              name="productName"
-              placeholder="Enter Product Name"
-              required
-            />
-  
-            <br />
-  
-            <button class="btn btn-primary" type="submit">Delete</button>
-          </form>
-        </div>
+  <div class="col-sm-6 col-md-6 col-lg-8 mx-auto">
+    <center><h3>Delete a Product</h3></center>
+
+    <div class="card border-dark">
+      <div class="card-body">
+        <form class="needs-validation" method="POST" action="/deleteProduct">
+          <label>Product ID</label>
+          <input
+            type="number"
+            class="form-control"
+            name="productID"
+            placeholder="Enter Product ID"
+            min="0"
+            max="2147483647"
+            step="1"
+            required
+          />
+
+          <br />
+
+          <label>Product Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="productName"
+            placeholder="Enter Product Name"
+            required
+          />
+
+          <br />
+
+          <button class="btn btn-primary" type="submit">Delete</button>
+        </form>
       </div>
     </div>
-  </div>  
+  </div>
+</div>  
