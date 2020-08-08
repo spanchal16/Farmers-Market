@@ -1,0 +1,36 @@
+<!-- Displaying all company agents -->
+
+<div class="mb-3" style="margin-top: 27vh; overflow: auto;">
+  <div class="col-sm-6 col-md-6 col-lg-8 mx-auto" style="height: 59vh;">
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Company ID</th>
+          <th scope="col">Company Name</th>
+          <th scope="col">Type</th>
+          <th scope="col">Price</th>
+          <th scope="col">Driver</th>
+          <th scope="col">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% agents.forEach(function(agent){ %>
+        <tr>
+          <td><%= agent.C_ID %></td>
+          <td><%= agent.C_Name %></td>
+          <td><%= agent.Type %></td>
+          <td><%= agent.Price %></td>
+          <td><%= agent.Driver %></td>
+          <td>
+            <a
+              href="/editcompany?cid=<%= agent.C_ID %>&type=<%= agent.Type %>"
+              class="btn btn-primary"
+              >Edit</a
+            >
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

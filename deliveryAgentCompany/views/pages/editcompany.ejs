@@ -1,0 +1,81 @@
+<!-- Updatating a company -->
+
+<div class="mb-3" style="margin-top: 27vh; overflow: auto;">
+  <div class="col-sm-6 col-md-6 col-lg-8 mx-auto" style="height: 59vh;">
+    <center><h3>Edit Company</h3></center>
+
+    <form class="needs-validation" method="POST" action="/editcompany">
+      <label for="lblcompanyid">Company ID</label>
+      <input
+        type="number"
+        class="form-control"
+        name="txtcompanyid"
+        value="<%= agents.C_ID %>"
+        readonly
+      />
+
+      <br />
+
+      <label for="lblcompanyname">Company Name</label>
+      <input
+        type="text"
+        class="form-control"
+        name="txtcompanyname"
+        required
+        value="<%=
+          agents.C_Name %>"
+        readonly
+      />
+
+      <br />
+
+      <label for="lblcompanytype">Company Type</label>
+      <input
+        type="text"
+        class="form-control"
+        name="txttype"
+        required
+        value="<%=
+          agents.Type %>"
+        readonly
+      />
+
+      <br />
+
+      <label for="lblcompanyprice">Price</label>
+      <input
+        type="number"
+        class="form-control"
+        name="txtprice"
+        min="0"
+        step="1"
+        required
+        value="<%=
+          agents.Price %>"
+      />
+
+      <br />
+
+      <label for="lblcompanydriver">Driver</label>
+      <input
+        type="number"
+        class="form-control"
+        name="txtdriver"
+        placeholder="Enter Quantity on hand"
+        min="0"
+        step="1"
+        required
+        value="<%=
+          agents.Driver %>"
+      />
+
+      <br />
+
+      <div style="text-align: center;">
+        <button class="btn btn-primary" type="submit">
+          Update Company Details
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

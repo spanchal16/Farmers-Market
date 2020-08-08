@@ -1,0 +1,64 @@
+<!-- Searching a company -->
+<div class="mb-3" style="margin-top: 27vh; overflow: auto;">
+    <div class="col-sm-6 col-md-6 col-lg-8 mx-auto" style="height: 59vh;">
+      <center><h3>Search Company</h1></center>
+  
+        <form class="needs-validation" method="POST" action="/searchcompany">
+            <label for="lblcompanyid">Company ID</label>
+            <input
+              type="number"
+              class="form-control"
+              name="txtcompanyid"
+              placeholder="Enter Company ID"
+              min="0"
+              step="1"
+              required
+            />
+  
+            <br />
+
+            <label for="lbltype">Type</label>
+            <input
+              type="text"
+              class="form-control"
+              name="txttype"
+              placeholder="Enter Company Type"
+              min="0"
+              step="1"
+              required
+              style="text-transform: capitalize;"
+            />
+  
+            <br />
+  
+            <div style="text-align: center;">
+                <button class="btn btn-primary" type="submit">Search Company</button>
+            </div>
+          </form>
+  
+      <br />
+  
+      <% if (typeof agents != 'undefined'){ if (agents == null) { %>
+  
+      <div class="card border-danger bg-danger">
+        <div class="card-body mx-auto">
+          <p class="card-text text-white">
+            No such data is available in database.
+          </p>
+        </div>
+      </div>
+  
+      <% } else { %>
+  
+      <div class="card border-success bg-success">
+        <div class="card-body mx-auto">
+          <p class="card-text text-white">
+            Company ID = <%= agents.C_ID %>, Company Name = <%= agents.C_Name %>,
+            Type = <%= agents.Type %>, Price = <%= agents.Price %>, Driver = <%= agents.Driver%>
+          </p>
+        </div>
+      </div>
+      <% } }%>
+    </div>
+  </div>
+  
