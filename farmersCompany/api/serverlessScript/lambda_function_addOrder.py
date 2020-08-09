@@ -6,7 +6,7 @@ print('Loading function')
 #Configuration Values
 endpoint = 'database-2.cso32duu5tdh.us-east-1.rds.amazonaws.com'
 username = 'beltran'
-password = 'B008479'
+password = 'B00847961'
 database_name = 'cloud'
 
 
@@ -23,7 +23,7 @@ def lambda_handler(event, context):
 	responseObject['statusCode'] = 200
 	responseObject['headers'] = {}
 	responseObject['headers']['Content-Type'] = 'application/json'
-	responseObject['body'] = json.dumps("Hello from lambda")
+	#responseObject['body'] = json.dumps("Hello from lambda")
 	responseObject['body'] = json.dumps(jobsResponse)
 
 	#4. Return the response object
@@ -35,39 +35,21 @@ def query_database(body):
 	#Connection
 	connection = pymysql.connect(endpoint, user=username, passwd=password, db=database_name, charset='utf8mb4',
 	                         cursorclass=pymysql.cursors.DictCursor)
-	result= {"status": 'unsuccess'}
+	result= {"status": 'unsuccessful'}
 	
-	
-	productID= body['productID'] 
-	product= body['product']
-	amount= body['amount']
+	orderId= body['orderId'] 
+	quantity= body['quantity']
+	deliveryAgent= body['deliveryAgent']
+	dateTime= body['dateTime']
 	
 	try:
-	with connection.cursor() as cursor:
-	  try:
-	      cursor.execute("XA START 'transaction5409'")
+		with connection.cursor() as cursor:
+			sql = "INSERT INTO cloud.orders VALUES (%s , %s , %s, %s )"
+			cursor.execute(sql, (orderId, quantity, deliveryAgent, dateTime) )
+			connection.commit()
+		result= {"status": 'successful'}
 	
-	      sql = "UPDATE products SET stock= CASE WHEN stock>=%s THEN stock - %s ELSE stock END WHERE productID = %s AND product = %s"
-	      
-	      val = ( amount, amount, productID, product)
-	      cursor.execute(sql, val)
-	
-	      cursor.execute("XA END 'transaction5409'")
-	
-	      cursor.execute("XA PREPARE 'transaction5409'")
-	
-	      cursor.execute("XA COMMIT 'transaction5409'")
-	      
-	      result= {"status": 'successful'}
-	      connection.commit()
-	  except:
-	      print("an error ocurred Rollback")
-	      result= {"status": 'unsuccessful'}
-	      cursor.execute("XA ROLLBACK 'transaction5409'") 
-	      connection.commit()
-	
-	
-	
+		
 	except pymysql.Error:
 	  raise RuntimeError(
 	"Cannot connect to database. "
@@ -79,3 +61,4 @@ def query_database(body):
 	  connection.close()
 	
 	return result
+

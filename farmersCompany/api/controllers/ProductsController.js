@@ -218,4 +218,32 @@ module.exports = {
                 return res.json({ status: 'unsuccessful' });
             });
     },
+
+    addOrder: async function (req, res) {
+        console.log(req.body);
+        const orderId = req.body.orderId;
+        const quantity = parseInt(req.body.quantity);
+        const deliveryAgent = req.body.deliveryAgent;
+        const dateTime = req.body.dateTime;
+
+        // 
+        await axios({
+            method: 'post',
+            url: "https://4ra1a2g84e.execute-api.us-east-1.amazonaws.com/production/addorder",
+            headers: {},
+            data: {
+                orderId: orderId,
+                quantity: quantity,
+                deliveryAgent: deliveryAgent,
+                dateTime: dateTime
+            }
+        })
+            .then(function (response) {
+                //console.log(response);
+                return res.json(response["data"]);
+            })
+            .catch(function (error) {
+                return res.json({ status: 'unsuccessful' });
+            });
+    },
 }

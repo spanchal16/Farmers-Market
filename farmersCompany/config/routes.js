@@ -28,6 +28,7 @@ module.exports.routes = {
   "GET /api/getPrice/:productID/:product": "ProductsController.getPrice",
   "GET /api/enoughStock/:productID/:product/:amount": "ProductsController.enoughStock",
   "POST /api/buyProduct/:productID/:product/:amount": "ProductsController.buyProduct",
+  "POST /api/addOrder": "ProductsController.addOrder",
 
 
   "GET /error": { view: "error" },
