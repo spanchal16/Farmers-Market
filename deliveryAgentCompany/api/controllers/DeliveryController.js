@@ -168,7 +168,7 @@ module.exports = {
       })
         .then((response) => {
           if (response.status === 200) {
-            return res.ok();
+            return res.status(200).json(response.data);
           } else {
             return res.view("error", { err: response.data });
           }
