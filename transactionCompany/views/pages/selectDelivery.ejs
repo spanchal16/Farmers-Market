@@ -32,7 +32,7 @@ style="text-align: center; padding: 2vh;"
                 <td> <%= singleData.C_Name %> </td>
                 <td> <%= singleData.Type %> </td>
                 <td> <%= singleData.Price %> </td>
-                <td><a href="/orderSummary?cID=<%= singleData.C_ID %>&ctype=<%= singleData.Type %>" class="btn btn-primary">Select</a></td>
+                <td><a href="/orderSummary?cID=<%= singleData.C_ID %>&ctype=<%= singleData.Type %>&qty=<%= quantity %>" class="btn btn-primary">Select</a></td>
                 </tr>
                 <% }) %>
               

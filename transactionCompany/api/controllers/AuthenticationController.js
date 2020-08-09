@@ -115,10 +115,18 @@ module.exports = {
             });
             console.log(allData)
             if(req.query.error != undefined){
+                req.session.currentProductID = null;
+                req.session.currentProduct = null;
+                req.session.priceEach = null;
+                req.session.currentQty = null;
                 let error = req.query.error
                 res.view('pages/userHome', { name, allData, error });
             }
             else{
+                req.session.currentProductID = null;
+                req.session.currentProduct = null;
+                req.session.priceEach = null;
+                req.session.currentQty = null;    
             res.view('pages/userHome', { name, allData });
             }
         }

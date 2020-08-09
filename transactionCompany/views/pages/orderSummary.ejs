@@ -9,7 +9,126 @@ style="text-align: center; padding: 2vh;"
 <a href="/" class="btn-sm btn-dark" style="float: right;">Logout</a>
 </div>
 <div class="mb-3" style="margin-top: 7vh; overflow: auto; margin-bottom: 20%;">
-    
+    <div class="card border-dark" style="align-self: center; align-content: center; margin-top: 10%;" >
+        <h2>Your Order Summary</h2>
+        <div class="card-body" >
+    <form class="needs-validation" method="POST" action="/placeOrder">
+    <div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center; float: left; margin-left: 5%;" >
+        <h2>Farmer's Market Bill</h2>
+        <div class="card-body" >
+
+
+    <input name="txtproductid" type = "hidden" value= <%= productId %> >
+    <input name="txtcompanyid" type = "hidden" value= <%= deliveryCompanyId %> >
+    <br />
+    <label for="lblpartid">Product</label>
+    <input
+    type="text"
+    class="form-control"
+    name="txtproduct"
+    value="<%= prod %>"
+    readonly
+  />
+  <br />
+  <label for="lblpartid">Price Each</label>
+    <input
+    type="number"
+    class="form-control"
+    name="txtprice"
+    value="<%= priceEach %>"
+    readonly
+  />
+<br />
+<label for="lblpartid">Quantity</label>
+<input
+class="form-control"
+name="txtquantity"
+type = "number"
+value="<%= quant %>"
+readonly
+/>
+<br />
+<label for="lblpartid">Total Product Cost</label>
+<input
+class="form-control"
+name="txtdeliverycost"
+type = "number"
+value="<%= productCost %>"
+readonly
+/>
+<br /><br />
+</div>
+</div>
+<div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center; float: right;margin-right: 5%" >
+    <h2>Delivery Company Bill</h2>
+    <div class="card-body" >
+
+
+<input name="txtproductid" type = "hidden" value= <%= productId %> >
+<br />
+<label for="lblpartid">Company Name</label>
+<input
+type="text"
+class="form-control"
+name="txtcompany"
+value="<%= deliveryCompany %>"
+readonly
+/>
+<br />
+<label for="lblpartid">Delivery Type</label>
+<input
+type="text"
+class="form-control"
+name="txtdeliverytype"
+value="<%= deliveryType %>"
+readonly
+/>
+<br />
+<label for="lblpartid">Delivery Cost</label>
+<input
+class="form-control"
+name="txtdeliverycost"
+type = "number"
+value="<%= driverCost %>"
+readonly
+/>
+<br />
+<label for="lblpartid">Delivery Address</label>
+<input
+type="text"
+class="form-control"
+name="txtaddress"
+value="<%= address %>"
+readonly
+/>
+<br />
+</div>
+</div>
+<br />
+<br />
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br />
+<br />
+
+<h2 style="float:right;">Total Bill
+<input
+type="number"
+class="form-control"
+name="txttotal"
+value="<%= total %>"
+style="width: 40%; float:right; margin-right: 20%;"
+readonly
+/>
+</h2>
+<br />
+<br />
+<button class="btn btn-primary" type="submit" style="float:right;margin-right: 5%;">Place Order>>></button>
+</form>   
+</div>
+</div>
+
+
     <% if (typeof error != 'undefined'){ if (error != null || error != "") { %>
   
         <div class="card border-danger bg-danger" style="width: 35%; margin-left: 30%; margin-top: 1%; height: 1%;">

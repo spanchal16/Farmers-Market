@@ -43,6 +43,10 @@ module.exports = {
             res.redirect('/?error=You need to login first!');
         }
         else{
+            req.session.currentProductID = null;
+            req.session.currentProduct = null;
+            req.session.priceEach = null;
+            req.session.currentQty = null;
             res.view('pages/searchProduct');
         }
         },
@@ -106,7 +110,11 @@ module.exports = {
                     res.view('pages/buyProduct',{productID, product, prc, error});
                 }
                 else{
+                req.session.priceEach = prc;
+                req.session.currentProductID = req.query.productID;
+                req.session.currentProduct = req.query.product;
                 res.view('pages/buyProduct',{productID, product, prc});
+                
             }
             }      
         }
@@ -133,9 +141,10 @@ module.exports = {
             let status = st.data["status"];
             if(status === "yes"){
                 res.redirect("/selectDelivery?productID="+req.body.txtproductid+
-                "&product="+req.body.txtproduct+"&qty="+qty);
+                "&product="+req.body.txtproduct+"&qty="+qty+"&peach="+req.body.txtprice);
             }
             else{
+                req.session.priceEach = null;
                 res.redirect("/buyProduct?productID="+req.body.txtproductid+
                 "&product="+req.body.txtproduct+"&error= Not sufficient Quantity");
             }
@@ -172,6 +181,7 @@ module.exports = {
                     let productID = req.query.productID;
                     let product = req.query.product;
                     let quantity = req.query.qty;
+                    let peach = req.query.peach;
 
                     await axios({
                         method: 'get',
@@ -185,10 +195,13 @@ module.exports = {
                            console.log(response);
                            console.log(response.data);
                            let allData = response;
-                           res.view("pages/selectDelivery", {allData})
                            req.session.currentProductID = productID;
                            req.session.currentProduct = product;
                            req.session.currentQty = quantity;
+                           req.session.priceEach = peach;
+                           res.view("pages/selectDelivery", {allData, quantity})
+
+                           console.log("Setting sessions: "+ req.session.currentProduct)
 
                         })
                         .catch(function (error) {
@@ -238,10 +251,25 @@ module.exports = {
                             
                             if(parseInt(response.data["Driver"],10) > 0){
                                 console.log("driver available")
+                                console.log("Accessing sessions: "+ req.session.currentProduct)
+                                console.log(response.data["Price"]);
+                               let driverCost =  parseInt(response.data["Price"],10)
+                               let deliveryCompany = response.data["C_Name"]
+                               let deliveryType = response.data["Type"]
+                               let deliveryCompanyId = response.data["C_ID"]
+                               let productId = req.session.currentProductID;
+                               let prod = req.session.currentProduct;
+                               let priceEach = req.session.priceEach;
+                               let quant = req.query.qty;
+                               let address = req.session.address;
+                               let productCost = Number((parseFloat(quant+"") * parseFloat(priceEach + "")).toFixed(2));
+                               let total = Number((driverCost + (parseFloat(quant+"") * parseFloat(priceEach + ""))).toFixed(2));
+                                res.view("pages/orderSummary",{driverCost, deliveryCompany, deliveryCompanyId, deliveryType, productId,
+                                prod, productCost, priceEach, quant, address, total});
                             }
                             else{
                                 console.log("driver unavailable")
-                                //res.redirect()
+                                res.redirect("/userHome?error= All delivery persons are busy. Please try again with a adifferent company!");
                             } 
                         })
                         .catch(function (error) {
