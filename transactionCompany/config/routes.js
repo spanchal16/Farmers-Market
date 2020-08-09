@@ -28,4 +28,6 @@ module.exports.routes = {
 
   "GET /orderResult": "OrderingController.orderResult",
 
+  "GET /viewOrders": "OrderingController.viewOrders",
+
 };

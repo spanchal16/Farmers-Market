@@ -6,7 +6,6 @@ style="text-align: center; padding: 2vh;"
 <a href="/" class="btn-sm btn-dark" style="float: right; margin-right: 2%;">Logout</a>
 <a href="/viewOrders" class="btn-sm btn-dark" style="float: right;margin-right: 2%;">View Orders</a>
 <a href="/searchProduct" class="btn-sm btn-dark" style="float: right;margin-right: 2%;">Search</a>
-
 </div>
 <div class="mb-3" style="margin-top: 7vh; overflow: auto;margin-bottom: 5%;">
     <br />
@@ -15,21 +14,29 @@ style="text-align: center; padding: 2vh;"
         <table class="table table-bordered">
           <thead class="table-dark">
             <tr>
-              <th scope="col">Product ID</th>
+              <th scope="col">Order ID</th>
               <th scope="col">Product</th>
-              <th scope="col">Price</th>
-              <th scope="col">Buy</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Delivery Agent</th>
+              <th scope="col">Date</th>
+              <th scope="col">Delivery Type</th>
+              <th scope="col">Gross Amount</th>
+              <th scope="col">Order Status</th>
             </tr>
           </thead>
           <tbody>
             <tbody>
     
-              <% allData.data.forEach(function(singleData){ %>
+              <% results.rows.forEach(function(singleData){ %>
                 <tr>
-                <td> <%= singleData.productID %> </td>
+                <td> <%= singleData.order_id %> </td>
                 <td> <%= singleData.product %> </td>
-                <td> <%= singleData.price %> </td>
-                <td><a href="/buyProduct?productID=<%= singleData.productID %>&product=<%= singleData.product %>" class="btn btn-primary">Buy</a></td>
+                <td> <%= singleData.quantity %> </td>
+                <td> <%= singleData.delivery_company %> </td>
+                <td> <%= singleData.date_time %> </td>
+                <td> <%= singleData.delivery_type %> </td>
+                <td> <%= singleData.total_cost %> </td>
+                <td> <%= singleData.order_status %> </td>
                 </tr>
                 <% }) %>
               

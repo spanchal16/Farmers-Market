@@ -421,7 +421,7 @@ module.exports = {
                     });
 
                 console.log("Waiting for above transactions to finish");
-                await sleep(10000);
+                await sleep(5000);
         
             //checking XA trasaction
 
@@ -490,7 +490,8 @@ module.exports = {
                                                                     }
                                                                     else {
                                                                         console.log("Completed the XA transaction succesfully");
-                                                                        let success_message = "Your order has been placed successfully. Your order id is " + orderId;
+                                                                        let success_message = "Your order has been placed successfully. Your order id is " + orderId+". You will have to pay $"+
+                                                                        totalCost+" to the delivery person";
                                                                         res.redirect("/orderResult?success=" + success_message);
 
                                                                     }
@@ -607,5 +608,23 @@ module.exports = {
                 res.view("pages/orderResult", { success });
             }
         }
+    },
+    viewOrders: async function (req, res) {
+        if (req.session.authenticated != true) {
+            res.redirect('/?error=You need to login first!');
+        }
+        else{
+        let select_statement = "select * from orders where email_id = '"+req.session.emailId+"'";
+        await sails.sendNativeQuery(select_statement, async function (err, results) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                console.log(results["rows"][0]["order_id"])
+                let allData = results;
+                res.view("pages/viewOrders", { results});
+            }
+        });
+    }
     },
 };
