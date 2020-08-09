@@ -8,17 +8,19 @@ style="text-align: center; padding: 2vh;"
 <a href="/" class="btn-sm btn-dark">View Orders</a>
 <a href="/" class="btn-sm btn-dark" style="float: right;">Logout</a>
 </div>
+<h2>Select a Deivery Company and Type</h2>
 <div class="mb-3" style="margin-top: 7vh; overflow: auto;margin-bottom: 20%;">
     <br />
     <br />
-    <div class="col-sm-6 col-md-6 col-lg-8 mx-auto" style="height: 39vh;">
+    <div class="col-sm-6 col-md-6 col-lg-8 mx-auto" style="height: 100vh;">
         <table class="table table-bordered">
           <thead class="table-dark">
             <tr>
-              <th scope="col">Product ID</th>
-              <th scope="col">Product</th>
+              <th scope="col">Company ID</th>
+              <th scope="col">Company Name</th>
+              <th scope="col">Type of Delivery</th>
               <th scope="col">Price</th>
-              <th scope="col">Buy</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -26,10 +28,11 @@ style="text-align: center; padding: 2vh;"
     
               <% allData.data.forEach(function(singleData){ %>
                 <tr>
-                <td> <%= singleData.productID %> </td>
-                <td> <%= singleData.product %> </td>
-                <td> <%= singleData.price %> </td>
-                <td><a href="/buyProduct?productID=<%= singleData.productID %>&product=<%= singleData.product %>" class="btn btn-primary">Select</a></td>
+                <td> <%= singleData.C_ID %> </td>
+                <td> <%= singleData.C_Name %> </td>
+                <td> <%= singleData.Type %> </td>
+                <td> <%= singleData.Price %> </td>
+                <td><a href="/orderSummary?cID=<%= singleData.C_ID %>&ctype=<%= singleData.Type %>" class="btn btn-primary">Select</a></td>
                 </tr>
                 <% }) %>
               
