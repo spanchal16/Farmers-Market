@@ -1,3 +1,10 @@
+<div
+class="bg-info fixed-top"
+style="text-align: center; padding: 2vh;"
+>
+<h2>Farmer's Market: Transaction Portal</h2>
+<a href="/" class="btn-sm btn-dark">Home</a>
+</div>
 <div class="mb-3" style="margin-top: 27vh; overflow: auto;">
   <div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center;margin-left: 30%;" >
     <h2>2-Factor Question Authentication</h2>
@@ -16,6 +23,8 @@
         />
         <br />
         <input name="correctanswer" type = "hidden" value= <%= answer %> >
+        <input name="email" type = "hidden" value= <%= email %> >
+        <input name="name" type = "hidden" value= <%= name %> >
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
       <br />
