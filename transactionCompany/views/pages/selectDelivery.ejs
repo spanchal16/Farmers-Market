@@ -8,7 +8,7 @@ style="text-align: center; padding: 2vh;"
 <a href="/" class="btn-sm btn-dark">View Orders</a>
 <a href="/" class="btn-sm btn-dark" style="float: right;">Logout</a>
 </div>
-<div class="mb-3" style="margin-top: 7vh; overflow: auto;margin-bottom: 5%;">
+<div class="mb-3" style="margin-top: 7vh; overflow: auto;margin-bottom: 20%;">
     <br />
     <br />
     <div class="col-sm-6 col-md-6 col-lg-8 mx-auto" style="height: 39vh;">
@@ -29,7 +29,7 @@ style="text-align: center; padding: 2vh;"
                 <td> <%= singleData.productID %> </td>
                 <td> <%= singleData.product %> </td>
                 <td> <%= singleData.price %> </td>
-                <td><a href="/buyProduct?productID=<%= singleData.productID %>&product=<%= singleData.product %>" class="btn btn-primary">Buy</a></td>
+                <td><a href="/buyProduct?productID=<%= singleData.productID %>&product=<%= singleData.product %>" class="btn btn-primary">Select</a></td>
                 </tr>
                 <% }) %>
               

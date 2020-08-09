@@ -60,7 +60,7 @@ module.exports = {
                             answer = results["rows"][0]["answer2"];
                         }
                         name = results["rows"][0]["first_name"];
-                        
+                        req.session.address = results["rows"][0]["address"];
                         res.view('pages/twoFactorQuestions', { email, question, answer, name });
                     }
                 }
@@ -99,6 +99,7 @@ module.exports = {
         }
         else{
             let name = req.session.name;
+
             await axios({
                 method: 'get',
                 url: "https://farmersmarketcompany.azurewebsites.net/api/getallProducts",
@@ -113,7 +114,13 @@ module.exports = {
                     return res.json({ status: 'unsuccessful' });
             });
             console.log(allData)
+            if(req.query.error != undefined){
+                let error = req.query.error
+                res.view('pages/userHome', { name, allData, error });
+            }
+            else{
             res.view('pages/userHome', { name, allData });
+            }
         }
 
     },

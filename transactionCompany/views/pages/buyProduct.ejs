@@ -8,7 +8,7 @@ style="text-align: center; padding: 2vh;"
 <a href="/" class="btn-sm btn-dark">View Orders</a>
 <a href="/" class="btn-sm btn-dark" style="float: right;">Logout</a>
 </div>
-<div class="mb-3" style="margin-top: 7vh; overflow: auto;">
+<div class="mb-3" style="margin-top: 7vh; overflow: auto; margin-bottom: 20%;">
     <br />
     <br />
     <div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center;margin-left: 30%;" >
@@ -42,20 +42,11 @@ style="text-align: center; padding: 2vh;"
     value="<%= prc %>"
     readonly
   />
-  <br />
-  <label for="lblpartid">Product</label>
-  <input
-  type="text"
-  class="form-control"
-  name="txtproduct"
-  value="<%= product %>"
-  readonly
-/>
 <br />
 <label for="lblpartid">Quantity</label>
 <input
 class="form-control"
-name="txtquntity"
+name="txtquantity"
 type = "number"
 placeholder="Enter quantity"
 max="1000"
@@ -63,7 +54,7 @@ min="0"
 step="1"
 required
 />
-<br /><br /><br />
+<br />
     <button class="btn btn-primary" type="submit">Go to delivery options</button>
   </form>
 </div>

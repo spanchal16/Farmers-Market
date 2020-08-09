@@ -90,20 +90,54 @@ module.exports = {
                 })
                     .then(function (response) {
                        // console.log(response);
-                        console.log("priceeee-->"+response)
+                        console.log("priceeee-->"+ response.data)
                         priceDetail = response;
                     })
                     .catch(function (error) {
                         return res.json({ status: 'unsuccessful' });
                 });
-                let price = null;
-                for (let pr of priceDetail) {
-                    price = pr
+               let prc = 0;
+                for (let pr of priceDetail.data) {
+                    console.log(pr);
+                    prc = pr.price
                 }
-                let prc = price["price"];
+                if(req.query.error != undefined){
+                    let error = req.query.error;
+                    res.view('pages/buyProduct',{productID, product, prc, error});
+                }
+                else{
                 res.view('pages/buyProduct',{productID, product, prc});
+            }
             }      
         }
+        },
+
+        checkAvailability: async function (req, res) {
+            let qty = req.body.txtquantity;
+            let st = null;
+            await axios({
+                method: 'get',
+                url: "https://farmersmarketcompany.azurewebsites.net/api/enoughStock/"+req.body.txtproductid+
+                "/"+req.body.txtproduct+"/"+qty,
+                headers: {},
+                data: {}
+            })
+                .then(function (response) {
+                   // console.log(response);
+                    console.log("sts-->"+ response.data)
+                    st = response;
+                })
+                .catch(function (error) {
+                    return res.json({ status: 'unsuccessful' });
+            });
+            let status = st.data["status"];
+            if(status === "yes"){
+                res.view("pages/selectDelivery");
+            }
+            else{
+                res.redirect("/buyProduct?productID="+req.body.txtproductid+
+                "&product="+req.body.txtproduct+"&error= Not sufficient Quantity");
+            }
         },
         
 };
