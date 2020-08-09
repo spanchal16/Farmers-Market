@@ -63,7 +63,7 @@ style="text-align: center; padding: 2vh;"
                         <td> <%= singleData.productID %> </td>
                         <td> <%= singleData.product %> </td>
                         <td> <%= singleData.price %> </td>
-                        <td><a href="/buyProduct/<%= singleData.productID %>/<%= singleData.product %>" class="btn btn-primary">Buy</a></td>
+                        <td><a href="/buyProduct?productID=<%= singleData.productID %>&product=<%= singleData.product %>" class="btn btn-primary">Buy</a></td>
                         </tr>
                         <% }) %>
                   

@@ -18,4 +18,7 @@ module.exports.routes = {
   "GET /searchProduct": "OrderingController.goSearch",
   "POST /searchProduct": "OrderingController.searchProduct",
 
+  "GET /buyProduct": "OrderingController.buyProduct",
+  "POST /buyProduct": "OrderingController.checkAvailability",
+
 };

@@ -101,13 +101,12 @@ module.exports = {
             let name = req.session.name;
             await axios({
                 method: 'get',
-                //URL TO BE CHANGEDDDDDDDDDDDD
-                url: "https://4ra1a2g84e.execute-api.us-east-1.amazonaws.com/production/getallproducts",
+                url: "https://farmersmarketcompany.azurewebsites.net/api/getallProducts",
                 headers: {},
                 data: {}
             })
                 .then(function (response) {
-                   // console.log(response);
+                   // console.log("home all->"+response);
                     allData = response;
                 })
                 .catch(function (error) {

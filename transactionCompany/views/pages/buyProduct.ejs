@@ -1,0 +1,85 @@
+<div
+class="bg-info fixed-top"
+style="text-align: center; padding: 2vh;"
+>
+<h2 style="float: left;">Welcome, <%= name %> !</h2>
+<a href="/userHome" class="btn-sm btn-dark">Home</a>
+<a href="/" class="btn-sm btn-dark">Update Profile</a>
+<a href="/" class="btn-sm btn-dark">View Orders</a>
+<a href="/" class="btn-sm btn-dark" style="float: right;">Logout</a>
+</div>
+<div class="mb-3" style="margin-top: 7vh; overflow: auto;">
+    <br />
+    <br />
+    <div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center;margin-left: 30%;" >
+        <h2>Select Quantity</h2>
+        <div class="card-body" >
+
+<form class="needs-validation" method="POST" action="/buyProduct">
+    <label for="lblpartid">Product ID </label>
+    <input
+    type="text"
+    class="form-control"
+    name="txtproductid"
+    value="<%= productID %>"
+    readonly
+  />
+    <br />
+    <label for="lblpartid">Product</label>
+    <input
+    type="text"
+    class="form-control"
+    name="txtproduct"
+    value="<%= product %>"
+    readonly
+  />
+  <br />
+  <label for="lblpartid">Price Each</label>
+    <input
+    type="number"
+    class="form-control"
+    name="txtprice"
+    value="<%= prc %>"
+    readonly
+  />
+  <br />
+  <label for="lblpartid">Product</label>
+  <input
+  type="text"
+  class="form-control"
+  name="txtproduct"
+  value="<%= product %>"
+  readonly
+/>
+<br />
+<label for="lblpartid">Quantity</label>
+<input
+class="form-control"
+name="txtquntity"
+type = "number"
+placeholder="Enter quantity"
+max="1000"
+min="0"
+step="1"
+required
+/>
+<br /><br /><br />
+    <button class="btn btn-primary" type="submit">Go to delivery options</button>
+  </form>
+</div>
+</div>
+  <% if (typeof error != 'undefined'){ if (error != null || error != "") { %>
+  
+    <div class="card border-danger bg-danger" style="width: 35%; margin-left: 30%; margin-top: 1%; height: 1%;">
+      <div class="card-body mx-auto"> 
+        <p class="card-text text-white">
+          <%= error %>
+        </p>
+      </div>
+    </div>
+
+    <% } %>
+
+    <%  }%>  
+
+</div>
