@@ -256,8 +256,10 @@ module.exports = {
     // ],
     onlyAllowOrigins: [
       'http://localhost:1337',
-      'https://a6-companyx.azurewebsites.net',
-      'https://sails.azurecr.io',
+      //'https://farmersMarket.azurewebsites.net',
+      'https://farmersMarketCompany.azurewebsites.net',
+      'https://farmersMarket-Company.azurewebsites.net',
+      //'https://sails.azurecr.io',
     ],
 
 

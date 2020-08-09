@@ -63,8 +63,8 @@ def query_database(body):
 	  except:
 	      print("an error ocurred Rollback")
 	      result= {"status": 'unsuccessful'}
-	      #cursor.execute("XA ROLLBACK 'transaction5409'") 
-	      #connection.commit()
+	      cursor.execute("XA ROLLBACK 'transaction5409'") 
+	      connection.commit()
 	
 	
 	
