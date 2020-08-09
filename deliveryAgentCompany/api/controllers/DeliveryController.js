@@ -1,6 +1,6 @@
 const axios = require("axios");
 const surl =
-  "https://h99eevtqo5.execute-api.us-east-1.amazonaws.com/production";
+  "https://4yx65ijz1l.execute-api.us-east-1.amazonaws.com/production";
 module.exports = {
   //display all company agents
   list: async function (req, res) {
@@ -119,5 +119,108 @@ module.exports = {
       .catch((err) => {
         return res.send(500, { error: `Something Went Wrong!\n${err}` });
       });
+  },
+
+  //To view all companies using(API)
+  allcompanies: async function (req, res) {
+    await axios({
+      method: "get",
+      url: `${surl}/listcompanies`,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return res.status(200).json(response.data);
+        } else {
+          return res.send(500, { error: response.data });
+        }
+      })
+      .catch((err) => {
+        return res.send(500, { error: `Something Went Wrong!\n${err}` });
+      });
+  },
+
+  //To view a company using (API)
+  company: async function (req, res) {
+    const url = require("url");
+    const custom_url = new URL(
+      req.protocol + "://" + req.get("host") + req.originalUrl
+    );
+    const search_param = custom_url.searchParams;
+    if (JSON.stringify(req.query) === "{}") {
+      res.status(404).json({
+        message: "Please enter proper parameter",
+      });
+    } else if (
+      search_param.has("cid") === false ||
+      search_param.has("type") === false
+    ) {
+      res.status(404).json({
+        message: "Please enter proper parameter",
+      });
+    } else if (req.query.cid === "" || req.query.type === "") {
+      res.status(404).json({
+        message: "Please enter proper parameter",
+      });
+    } else {
+      await axios({
+        method: "get",
+        url: `${surl}/getcompany?cid=${req.query.cid}&type=${req.query.type}`,
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            return res.ok();
+          } else {
+            return res.view("error", { err: response.data });
+          }
+        })
+        .catch((err) => {
+          return res.view("error", { err: err });
+        });
+    }
+  },
+
+  //To  edit driver using (API)
+  updatedriver: async function (req, res) {
+    const url = require("url");
+    const custom_url = new URL(
+      req.protocol + "://" + req.get("host") + req.originalUrl
+    );
+    const search_param = custom_url.searchParams;
+    if (JSON.stringify(req.query) === "{}") {
+      res.status(404).json({
+        message: "Please enter proper parameter",
+      });
+    } else if (
+      search_param.has("cid") === false ||
+      search_param.has("type") === false ||
+      search_param.has("driver") === false
+    ) {
+      res.status(404).json({
+        message: "Please enter proper parameter",
+      });
+    } else if (
+      req.query.cid === "" ||
+      req.query.type === "" ||
+      req.query.driver === ""
+    ) {
+      res.status(404).json({
+        message: "Please enter proper parameter",
+      });
+    } else {
+      await axios({
+        method: "post",
+        url: `${surl}/editdriver?cid=${req.query.cid}&type=${req.query.type}&driver=${req.query.driver}`,
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            return res.ok();
+          } else {
+            return res.view("error", { err: response.data });
+          }
+        })
+        .catch((err) => {
+          return res.view("error", { err: err });
+        });
+    }
   },
 };
