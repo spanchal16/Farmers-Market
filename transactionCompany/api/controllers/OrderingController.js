@@ -1,6 +1,11 @@
 
 const axios = require('axios')
-
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }   
+  
 module.exports = {
     searchProduct: async function (req, res) {
         if (req.session.authenticated != true) {
@@ -285,33 +290,33 @@ module.exports = {
     placeOrder: async function (req, res) {
 
         //Get date and time
-            //Get date and time
-    let date_time = new Date();
+        //Get date and time
+        let date_time = new Date();
 
-    // current date
-    // adjust 0 before single digit date
-    let date = ("0" + date_time.getDate()).slice(-2);
+        // current date
+        // adjust 0 before single digit date
+        let date = ("0" + date_time.getDate()).slice(-2);
 
-    // current month
-    let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
+        // current month
+        let month = ("0" + (date_time.getMonth() + 1)).slice(-2);
 
-    // current year
-    let year = date_time.getFullYear();
+        // current year
+        let year = date_time.getFullYear();
 
-    // current hours
-    let hours = date_time.getHours();
+        // current hours
+        let hours = date_time.getHours();
 
-    // current minutes
-    let minutes = date_time.getMinutes();
+        // current minutes
+        let minutes = date_time.getMinutes();
 
-    // current seconds
-    let seconds = date_time.getSeconds();
+        // current seconds
+        let seconds = date_time.getSeconds();
 
-    let dateCurrent = year + "-" + month + "-" + date
+        let dateCurrent = year + "-" + month + "-" + date
 
-    // prints date in YYYY-MM-DD format
+        // prints date in YYYY-MM-DD format
 
-    let timeCurrent = hours + ":" + minutes + ":" + seconds
+        let timeCurrent = hours + ":" + minutes + ":" + seconds
 
         //Getting all the data
         let driverCost = req.body.txtdeliverycost;
@@ -329,7 +334,7 @@ module.exports = {
         let emailId = req.session.emailId;
         let currentTime = dateCurrent + " " + timeCurrent;
         let dt = currentTime.split(" ");
-        let orderId = emailId + "_"+ year + month + date+"_"+hours + minutes + seconds;
+        let orderId = emailId + "_" + year + month + date + "_" + hours + minutes + seconds;
         let isProductAvailable = false;
         let isdeliveryPersonAvailable = false;
 
@@ -383,51 +388,192 @@ module.exports = {
                 return res.json({ status: 'unsuccessful' });
             });
 
-        if(isProductAvailable && isdeliveryPersonAvailable){
-        //checking XA trasaction
+        if (isProductAvailable && isdeliveryPersonAvailable) {
 
-        let sql_statement = "XA START 'xatest'";
+            // Update order being successful in X and Y
+            await axios.post(
+                "https://farmersmarketcompany.azurewebsites.net/api/buyProduct/"+productId+"/"+prod+"/"+quant
+              )
+                .then(function (re1s) {
+                   console.log("updated X");
+                })
+                .catch(function (error) {
+                    console.log("Catch error")
+                    console.log(error)
+                    let error_message = "Something went wrong while updating X!";
+                        res.redirect("/orderResult?error=" + error_message)
+                });
+
+                //sldmc
+                availableDrivers = availableDrivers - 1;
+                console.log("Now available: "+availableDrivers);
+                await axios.post(
+                    "http://deliveryagent-env.eba-vnnr4erm.us-east-1.elasticbeanstalk.com/api/updatedriver?" +
+                    "cid=" + deliveryCompanyId + "&type=" + deliveryType + "&driver=" + availableDrivers
+                )
+                    .then(function (results) {
+                        console.log("Updated both x and Y");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        let error_message = "Something went wrong while updating Y!";
+                        res.redirect("/orderResult?error=" + error_message)
+                    });
+
+                console.log("Waiting for above transactions to finish");
+                await sleep(10000);
+        
+            //checking XA trasaction
+
+            let sql_statement = "XA START 'xatest'";
 
             await sails.sendNativeQuery(sql_statement, async function (err, results) {
                 if (err) {
                     console.log(err);
-                    
+
                 }
                 else {
+                    let errorInTransaction = false;
                     console.log("XA began");
-                    let insert_statement = "";
+                    let values = orderId + "','" + prod + "','" + quant + "','" + deliveryCompany + "','" + currentTime + "','" +
+                        emailId + "','" + userName + "','" + address + "','" + deliveryCompanyId + "','" + deliveryType + "','" +
+                        productCost + "','" + driverCost + "','" + totalCost + "','Success');";
+                    let insert_statement = "insert into orders values('" + values;
                     //UpdateX
                     await sails.sendNativeQuery(insert_statement, async function (err, results) {
                         if (err) {
                             console.log(err);
-                            
                         }
                         else {
                             console.log("Insert Stataement running...");
-                            //UpdateY
+                            await sails.sendNativeQuery("XA END 'xatest'", async function (err, results) {
+                                if (err) {
+                                    console.log(err);
+                                    errorInTransaction = true;
+                                }
+                                else {
+                                    console.log("Transaction idle now...Waiting for other transactions to finish");
+                                    let oid = year + month + date + hours + minutes + seconds;
+                                    //UpdateY
+                                    await axios.post(
+                                        "http://deliveryagent-env.eba-vnnr4erm.us-east-1.elasticbeanstalk.com/api/addorder?"
+                                        + "oid=" + oid + "&username=" + userName + "&email=" + emailId + "&address=" + address + "&cid=" + deliveryCompanyId + "&type=" + deliveryType
+                                    )
+                                        .then(async function (re1s) {
+                                            let oidx = year + month + date + hours + minutes + seconds;
+                                            console.log("Delivery company returned success..Now checking with Farmer's market..");
+                                            // Update X
+                                            await axios({
+                                                method: 'post',
+                                                url: "https://farmersmarketcompany.azurewebsites.net/api/addOrder",
+                                                headers: {},
+                                                data: {
+                                                    orderId: oidx,
+                                                    quantity: quant,
+                                                    deliveryAgent: deliveryCompany,
+                                                    dateTime: currentTime
+                                                }
+                                            })                                    
+                                                .then(async function (response) {
+                                                        console.log("resuming transaction")
+                                                        await sails.sendNativeQuery("XA PREPARE 'xatest'", async function (err, results) {
+                                                            if (err) {
+                                                                console.log(err);
+                                                                errorInTransaction = true;
+                                                            }
+                                                            else {
+                                                                console.log("All other transactions are successful, resuming XA and committing");
+                                                                await sails.sendNativeQuery("XA COMMIT 'xatest';", async function (err, results) {
+                                                                    if (err) {
+                                                                        console.log(err);
+                                                                        errorInTransaction = true;
+                                                                    }
+                                                                    else {
+                                                                        console.log("Completed the XA transaction succesfully");
+                                                                        let success_message = "Your order has been placed successfully. Your order id is " + orderId;
+                                                                        res.redirect("/orderResult?success=" + success_message);
 
+                                                                    }
+                                                                });
+
+                                                            }
+                                                        });
+                                                })
+                                                .catch(function (error) {
+                                                    
+                                                    console.log(error)
+                                                    console.log("Error while adding to x")
+                                                    errorInTransaction = true;
+                                                });
+
+
+                                        })
+                                        .catch(function (error) {
+                                            console.log(error)
+                                            console.log("Error while adding to y")
+                                            errorInTransaction = true;
+                                        });
+
+                                }
+                            });
                         }
                     });
 
                 }
             });
         }
-        else if(isdeliveryPersonAvailable && !isProductAvailable){
-            let error_message = "The product you were odering has just gone out of stock. We are working hard to re-stock!"+
-            " Please check back again in few days!";
+        else if (isdeliveryPersonAvailable && !isProductAvailable) {
+            let error_message = "The product you were odering has just gone out of stock. We are working hard to re-stock!" +
+                " Please check back again in few days!";
+            let values = orderId + "','" + prod + "','" + quant + "','" + deliveryCompany + "','" + currentTime + "','" +
+                emailId + "','" + userName + "','" + address + "','" + deliveryCompanyId + "','" + deliveryType + "','" +
+                productCost + "','" + driverCost + "','" + totalCost + "','Failure');";
+            let insert_statement = "insert into orders values('" + values;
+
+            await sails.sendNativeQuery(insert_statement, async function (err, results) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                }
+            });
             res.redirect("/orderResult?error=" + error_message);
         }
-        else{
+        else if (errorInTransaction) {
+            let error_message = "Something went wrong contact the administrator!";
+            let values = orderId + "','" + prod + "','" + quant + "','" + deliveryCompany + "','" + currentTime + "','" +
+                emailId + "','" + userName + "','" + address + "','" + deliveryCompanyId + "','" + deliveryType + "','" +
+                productCost + "','" + driverCost + "','" + totalCost + "','Failure');";
+            let insert_statement = "insert into orders values('" + values;
+
+            await sails.sendNativeQuery(insert_statement, async function (err, results) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                }
+            });
+            res.redirect("/orderResult?error=" + error_message);
+        }
+        else {
             let error_message = "Oops! looks like the delivery company is running short of delivery drivers. Please try again with a different company";
+            let values = orderId + "','" + prod + "','" + quant + "','" + deliveryCompany + "','" + currentTime + "','" +
+                emailId + "','" + userName + "','" + address + "','" + deliveryCompanyId + "','" + deliveryType + "','" +
+                productCost + "','" + driverCost + "','" + totalCost + "','Failure');";
+            let insert_statement = "insert into orders values('" + values;
+
+            await sails.sendNativeQuery(insert_statement, async function (err, results) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                }
+            });
             res.redirect("/orderResult?error=" + error_message);
         }
-        
-        
-        //UpdateZ
-
-        let success_message = "Your order has been placed successfully. Your order id is " + orderId;
-        res.redirect("/orderResult?success=" + success_message);
-
     },
 
     orderResult: async function (req, res) {
