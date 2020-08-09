@@ -1,0 +1,40 @@
+<div
+class="bg-info fixed-top"
+style="text-align: center; padding: 2vh;"
+>
+<h2 style="float: left;">Welcome, <%= name %> !</h2>
+<a href="/userHome" class="btn-sm btn-dark">Home</a>
+<a href="/" class="btn-sm btn-dark">Update Profile</a>
+<a href="/" class="btn-sm btn-dark">View Orders</a>
+<a href="/" class="btn-sm btn-dark" style="float: right;">Logout</a>
+</div>
+<div class="mb-3" style="margin-top: 7vh; overflow: auto; margin-bottom: 20%;">
+   <div class="card border-dark" style="align-self: center; align-content: center; margin-top: 10%;">
+        <h2>Order Result</h2>
+        <div class="card-body" >
+
+            <% if (typeof error != 'undefined' ) { %>
+  
+                <div class="card border-danger bg-danger">
+                  <div class="card-body mx-auto">
+                    <p class="card-text text-white">
+                      <%= error %>
+                    </p>
+                  </div>
+                </div>
+            
+                <% } else { %>
+            
+                <div class="card border-success bg-success">
+                  <div class="card-body mx-auto">
+                    <p class="card-text text-white">
+                      <%= success %>
+                    </p>
+                  </div>
+                </div>
+                <% } %>  
+                <br />
+               <h2> <a href="/userHome" style="margin-left: 40%;"> Return Home</a> </h2>
+        </div>
+</div>
+</div>

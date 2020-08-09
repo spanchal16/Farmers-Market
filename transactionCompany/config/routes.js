@@ -24,4 +24,8 @@ module.exports.routes = {
   "GET /selectDelivery": "OrderingController.selectDelivery",
 
   "GET /orderSummary": "OrderingController.checkDelivery",
+  "POST /placeOrder": "OrderingController.placeOrder",
+
+  "GET /orderResult": "OrderingController.orderResult",
+
 };
