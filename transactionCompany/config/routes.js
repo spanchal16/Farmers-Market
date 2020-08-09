@@ -30,4 +30,6 @@ module.exports.routes = {
 
   "GET /viewOrders": "OrderingController.viewOrders",
 
+  "POST /registerUser": "AuthenticationController.registerData",
+
 };

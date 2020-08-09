@@ -133,5 +133,49 @@ module.exports = {
 
     },
 
+    // Function for Registering the user.
+    registerData: async function (req, res) {
+
+    
+        let email = req.body.txtemailid;
+        
+
+        const sqlSelect = "SELECT * FROM users where email_id = '"+email+"'";
+
+        await sails.sendNativeQuery(sqlSelect, async function (err, results) {
+            var length = results["rows"].length;
+            if (err) {
+                console.log(err);
+                res.redirect('/?error=Something went wrong. Please try again later');
+            }
+            else {
+                if (length < 1) {
+                    console.log("inside length < 1")
+                    let vals = "values('"+email+"' , "+" '"+req.body.txtfname+"' , "+" '"+req.body.txtlname+"' , "+" '"+req.body.txtpassword+"' , "+" '"+req.body.txtquetion1+"' , "+" '"+req.body.txtanswer1+"' , "+" '"+req.body.txtquetion2+"' , "+" '"+req.body.txtanswer2+"' , "+" '"+req.body.address+"')"
+        
+                  
+                    let sqlInsert = "insert into users " + vals;
+                    await sails.sendNativeQuery(sqlInsert, async function (err, results){
+                        if (err) {
+                            console.log(err);
+                            res.redirect('/?error=Something went wrong. Please try again later');
+                        }
+
+                        else{
+                            res.redirect('/')
+                        }
+                  
+
+                    })
+                      
+                }
+                else {
+                    res.redirect('/?error=Invalid Credentials');
+                }
+                   
+            }
+        })
+    }
+
 
 };

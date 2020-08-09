@@ -7,10 +7,102 @@ style="text-align: center; padding: 2vh;"
 </div>
 <div class="mb-3" style="margin-top: 27vh; overflow: auto;">
     <div class="card border-dark" style="height: 50%; width: 35%;align-self: center; align-content: center;margin-left: 30%;" >
-      <h2>register</h2>
+      <h2>Welcome to Registeration Page !</h2>
       <div class="card-body" >
-        <form class="needs-validation" method="POST" action="/twoFactor">
+        <form class="needs-validation" method="POST" action="/registerUser">
+          <label for="lblpartid">Email ID </label>
+        <input
+          class="form-control"
+          name="txtemailid"
+          type="email"
+          placeholder="Enter your email id"
+          required
+        />
+        <br />
+        <label for="lblfname">First Name  </label>
+        <input
+          class="form-control"
+          name="txtfname"
+          type="text"
+          placeholder="Enter your First Name"
+          required
+        />
 
+        <br />
+        <label for="lbllname">Last Name  </label>
+        <input
+          class="form-control"
+          name="txtlname"
+          type="text"
+          placeholder="Enter your Last Name"
+          required
+        />
+
+        <br />
+        <label for="lblpassword">Password  </label>
+        <input
+          class="form-control"
+          name="txtpassword"
+          type="password"
+          placeholder="Enter your Password"
+          required
+        />
+
+        
+        <br />
+        <label for="lblq1">Question 1:  </label>
+        <input
+          class="form-control"
+          name="txtquetion1"
+          type="text"
+          placeholder="Enter security Question 1:"
+          required
+        />
+
+        
+        <br />
+        <label for="lbla1">Answer 1:  </label>
+        <input
+          class="form-control"
+          name="txtanswer1"
+          type="text"
+          placeholder="Enter security Answer 1:"
+          required
+        />
+
+        
+        <br />
+        <label for="lblq2">Question 2:  </label>
+        <input
+          class="form-control"
+          name="txtquetion2"
+          type="text"
+          placeholder="Enter security Question 2:"
+          required
+        />
+
+        <br />
+        <label for="lbla2">Answer 2:  </label>
+        <input
+          class="form-control"
+          name="txtanswer2"
+          type="text"
+          placeholder="Enter security Answer 2:"
+          required
+        />
+
+        <br />
+        <label for="lbladdress">Address:  </label>
+        <input
+          class="form-control"
+          name="address"
+          type="text"
+          placeholder="Enter your address:"
+          required
+        />
+
+
+          <br />
           <button class="btn btn-primary" type="submit">Register</button>
         </form>
         <br />
@@ -18,4 +110,4 @@ style="text-align: center; padding: 2vh;"
     </div>
   
   </div>
-  
+  		  
