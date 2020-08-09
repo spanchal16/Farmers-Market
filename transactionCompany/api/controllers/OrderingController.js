@@ -330,14 +330,101 @@ module.exports = {
         let currentTime = dateCurrent + " " + timeCurrent;
         let dt = currentTime.split(" ");
         let orderId = emailId + "_"+ year + month + date+"_"+hours + minutes + seconds;
+        let isProductAvailable = false;
+        let isdeliveryPersonAvailable = false;
+
 
         console.log(orderId)
+
         //Check avail of prod
+        let st = null;
+        await axios({
+            method: 'get',
+            url: "https://farmersmarketcompany.azurewebsites.net/api/enoughStock/" + productId +
+                "/" + prod + "/" + quant,
+            headers: {},
+            data: {}
+        })
+            .then(function (response) {
+                // console.log(response);
+                st = response;
+            })
+            .catch(function (error) {
+                return res.json({ status: 'unsuccessful' });
+            });
+        let status = st.data["status"];
+        if (status === "yes") {
+            isProductAvailable = true;
+        }
+        else {
+            isProductAvailable = false;
+        }
         //Check avail of driver
-        //UpdateX
-        //UpdateY
-        //UpdateZ
+        let availableDrivers = 0;
+        await axios({
+            method: 'get',
+            url: "http://deliveryagent-env.eba-vnnr4erm.us-east-1.elasticbeanstalk.com/api/company?cid=" + deliveryCompanyId
+                + "&type=" + deliveryType,
+            headers: {},
+            data: {}
+        })
+            .then(function (response) {
+                console.log("Drivers" + response.data["Driver"]);
+                availableDrivers = parseInt(response.data["Driver"], 10);
+                if (parseInt(response.data["Driver"], 10) > 0) {
+                    isdeliveryPersonAvailable = true
+                }
+                else {
+                    isdeliveryPersonAvailable = false;
+                }
+            })
+            .catch(function (error) {
+                console.log(error)
+                return res.json({ status: 'unsuccessful' });
+            });
+
+        if(isProductAvailable && isdeliveryPersonAvailable){
+        //checking XA trasaction
+
+        let sql_statement = "XA START 'xatest'";
+
+            await sails.sendNativeQuery(sql_statement, async function (err, results) {
+                if (err) {
+                    console.log(err);
+                    
+                }
+                else {
+                    console.log("XA began");
+                    let insert_statement = "";
+                    //UpdateX
+                    await sails.sendNativeQuery(insert_statement, async function (err, results) {
+                        if (err) {
+                            console.log(err);
+                            
+                        }
+                        else {
+                            console.log("Insert Stataement running...");
+                            //UpdateY
+
+                        }
+                    });
+
+                }
+            });
+        }
+        else if(isdeliveryPersonAvailable && !isProductAvailable){
+            let error_message = "The product you were odering has just gone out of stock. We are working hard to re-stock!"+
+            " Please check back again in few days!";
+            res.redirect("/orderResult?error=" + error_message);
+        }
+        else{
+            let error_message = "Oops! looks like the delivery company is running short of delivery drivers. Please try again with a different company";
+            res.redirect("/orderResult?error=" + error_message);
+        }
         
+        
+        //UpdateZ
+
         let success_message = "Your order has been placed successfully. Your order id is " + orderId;
         res.redirect("/orderResult?success=" + success_message);
 
