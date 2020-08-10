@@ -420,8 +420,8 @@ module.exports = {
                         res.redirect("/orderResult?error=" + error_message)
                     });
 
-                console.log("Waiting for above transactions to finish");
-                await sleep(5000);
+            //    console.log("Waiting for above transactions to finish");
+            //    await sleep(5000);
         
             //checking XA trasaction
 
