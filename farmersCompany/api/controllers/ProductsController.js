@@ -14,6 +14,8 @@ module.exports = {
         try {
             var products = await axios.get("https://kei3ipx56h.execute-api.us-east-1.amazonaws.com/test/getallproducts");
             if (!products.data) {
+                let code = "400";
+                let message = "No data in database";
                 showError(code, message, res);
             }
             if (products.data) {
@@ -72,6 +74,8 @@ module.exports = {
             if (result.data) {
                 return res.view("pages/products/updateProduct", { product: result.data });
             } else if (!result.data) {
+                let code = "400";
+                let message = "No data in database";
                 showError(code, message, res);
             }
         } catch (err) {

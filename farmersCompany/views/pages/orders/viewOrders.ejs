@@ -1,0 +1,27 @@
+<div class="container" style="overflow: auto;">
+    <div>
+      <h2 class="text-center">Our orders</h2>
+      <div class="col-sm-6 col-md-6 col-lg-8 mx-auto">
+        <table class="table table-bordered">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Delivery Agent</th>
+              <th scope="col">Date Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% orders.forEach(function(order){ %>
+            <tr>
+              <td><%= order.orderId %></td>
+              <td><%= order.quantity %></td>
+              <td><%= order.deliveryAgent %></td>
+              <td><%= order.dateTime %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>  
+    </div>
+  </div>
