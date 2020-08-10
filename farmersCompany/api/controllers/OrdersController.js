@@ -1,5 +1,13 @@
 const axios = require('axios');
 
+function showError(code, message, res) {
+    let error = {
+        code: code,
+        message: message
+    }
+    res.view("error", { err: error });
+}
+
 module.exports = {
     // GET ALL
     viewData: async function (req, res) {
