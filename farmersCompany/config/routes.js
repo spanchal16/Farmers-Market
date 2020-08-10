@@ -1,10 +1,8 @@
 module.exports.routes = {
   
-  // Retrieve data
+  // Retrieve products
   "/": { view: "pages/homepage" },
   "GET /": "ProductsController.viewData",
-
-  // "GET /products/viewDataByID": "ProductsController.viewDataByID",
 
   //Add a product
   "GET /addProduct": { view: "pages/products/addProduct" },
@@ -14,7 +12,6 @@ module.exports.routes = {
   "GET /searchProduct": { view: "pages/products/searchProduct" },
   "POST /searchProduct": "ProductsController.searchProduct",
 
-
   // Update a product
   "GET /updateProduct/:productID": "ProductsController.editProduct",
   "POST /updateProduct": "ProductsController.updateProduct",
@@ -22,6 +19,10 @@ module.exports.routes = {
   // Delete a product
   "GET /deleteProduct": { view: "pages/products/deleteProduct" },
   "POST /deleteProduct": "ProductsController.deleteProduct",
+
+  // Retrieve orders
+  "/viewOrders": { view: "pages/orders/viewOrders" },
+  "GET /viewOrders": "OrdersController.viewData",
 
   // API routes
   "GET /api/getallProducts": "ProductsController.getallProducts",
